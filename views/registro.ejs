@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1 class="auth-title">Criar Conta</h1>
+                <p class="auth-subtitle">Registre-se para começar a gerenciar suas tarefas</p>
+                
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <form action="/registro" method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label for="nomeCompleto">Nome Completo:</label>
+                        <input 
+                            type="text" 
+                            id="nomeCompleto" 
+                            name="nomeCompleto" 
+                            value="<%= typeof formData !== 'undefined' && formData.nomeCompleto ? formData.nomeCompleto : '' %>"
+                            required 
+                            class="form-input"
+                            placeholder="Seu nome completo"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>"
+                            required 
+                            class="form-input"
+                            placeholder="seu@email.com"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dataNascimento">Data de Nascimento:</label>
+                        <input 
+                            type="date" 
+                            id="dataNascimento" 
+                            name="dataNascimento" 
+                            value="<%= typeof formData !== 'undefined' && formData.dataNascimento ? formData.dataNascimento : '' %>"
+                            required 
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senha">Senha:</label>
+                        <input 
+                            type="password" 
+                            id="senha" 
+                            name="senha" 
+                            required 
+                            class="form-input"
+                            placeholder="Mínimo 6 caracteres"
+                            minlength="6"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="confirmarDados" required>
+                            <span class="checkmark"></span>
+                            Confirmo que meus dados estão corretos
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        Registrar
+                    </button>
+                </form>
+
+                <div class="auth-links">
+                    <p>Já tem uma conta? <a href="/login" class="link">Fazer login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

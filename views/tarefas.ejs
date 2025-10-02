@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas - Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1>📋 Minhas Tarefas</h1>
+            <p>Organize suas tarefas com eficiência</p>
+        </div>
+        
+        <!-- Menu de Navegação -->
+        <nav class="nav">
+            <ul>
+                <li><a href="/home" class="nav-link">🏠 Início</a></li>
+                <li><a href="/sobre" class="nav-link">ℹ️ Sobre</a></li>
+                <li><a href="/tarefas" class="nav-link active">📋 Tarefas</a></li>
+                <li><a href="/dashboard" class="nav-link">📊 Dashboard</a></li>
+                <li><a href="/contato" class="nav-link">📞 Contato</a></li>
+                <li><a href="/api/status" class="nav-link">🔧 API Status</a></li>
+                <li>
+                    <form action="/logout" method="POST" class="logout-form">
+                        <button type="submit" class="nav-link logout">🚪 Sair</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-error">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+            <% } %>
+
+            <!-- Botão para abrir modal de nova tarefa -->
+            <div class="card">
+                <div class="add-task-section">
+                    <div class="task-stats">
+                        <h2 class="card-title">Suas Tarefas</h2>
+                        <div class="stats-counter">
+                            <span class="stat-item">
+                                <span class="stat-number" id="totalTarefas"><%= tarefas.length %></span>
+                                <span class="stat-label">Total</span>
+                            </span>
+                            <span class="stat-item">
+                                <span class="stat-number" id="tarefasConcluidas"><%= tarefas.filter(t => t.status === 'concluida').length %></span>
+                                <span class="stat-label">Concluídas</span>
+                            </span>
+                            <span class="stat-item">
+                                <span class="stat-number" id="tarefasPendentes"><%= tarefas.filter(t => t.status === 'pendente').length %></span>
+                                <span class="stat-label">Pendentes</span>
+                            </span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="abrirModalTarefa()">
+                        ➕ Nova Tarefa
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de tarefas -->
+            <div class="tasks-section">
+                <h2 class="section-title">
+                    Suas Tarefas 
+                    <span class="task-count">(<%= tarefas.length %>)</span>
+                </h2>
+
+                <% if (tarefas.length === 0) { %>
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <h3>Nenhuma tarefa ainda</h3>
+                        <p>Crie sua primeira tarefa usando o formulário acima!</p>
+                    </div>
+                <% } else { %>
+                    <div class="tasks-list">
+                        <% tarefas.forEach(tarefa => { %>
+                            <div class="task-item <%= tarefa.status === 'concluida' ? 'task-completed' : 'task-pending' %> priority-<%= tarefa.prioridade || 'baixa' %>" data-task-id="<%= tarefa._id %>">
+                                <div class="task-checkbox">
+                                    <input 
+                                        type="checkbox" 
+                                        id="task-<%= tarefa._id %>"
+                                        class="task-checkbox-input"
+                                        <%= tarefa.status === 'concluida' ? 'checked' : '' %>
+                                        onchange="toggleTaskStatus('<%= tarefa._id %>')"
+                                    >
+                                    <label for="task-<%= tarefa._id %>" class="task-checkbox-label"></label>
+                                </div>
+                                
+                                <div class="task-content">
+                                    <div class="task-header">
+                                        <h3 class="task-title <%= tarefa.status === 'concluida' ? 'task-title-completed' : '' %>">
+                                            <%= tarefa.titulo || tarefa.descricao %>
+                                        </h3>
+                                        <div class="task-badges">
+                                            <div class="task-priority">
+                                                <% 
+                                                    const prioridade = tarefa.prioridade || 'baixa';
+                                                    const prioridadeEmoji = prioridade === 'urgente' ? '🔴' : 
+                                                                           prioridade === 'media' ? '🟡' : '🟢';
+                                                    const prioridadeTexto = prioridade === 'urgente' ? 'Urgente' : 
+                                                                           prioridade === 'media' ? 'Média' : 'Baixa';
+                                                %>
+                                                <span class="priority-badge priority-<%= prioridade %>">
+                                                    <%= prioridadeEmoji %> <%= prioridadeTexto %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <% if (tarefa.descricao && tarefa.titulo) { %>
+                                        <div class="task-description <%= tarefa.status === 'concluida' ? 'task-description-completed' : '' %>">
+                                            <%= tarefa.descricao %>
+                                        </div>
+                                    <% } %>
+                                    
+                                    <div class="task-details">
+                                        <div class="task-date">
+                                            <strong>Criada em:</strong> 
+                                            <%= new Date(tarefa.dataPublicacao).toLocaleDateString('pt-BR', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) %>
+                                        </div>
+                                        
+                                        <% if (tarefa.status === 'concluida' && tarefa.dataConclusao) { %>
+                                            <div class="task-date">
+                                                <strong>Concluída em:</strong> 
+                                                <%= new Date(tarefa.dataConclusao).toLocaleDateString('pt-BR', {
+                                                    day: '2-digit',
+                                                    month: '2-digit',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) %>
+                                            </div>
+                                            <div class="task-time">
+                                                <strong>Tempo levado:</strong> 
+                                                <span class="time-badge"><%= tarefa.tempoLevado %></span>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+
+                                <div class="task-actions">
+                                    <% if (tarefa.status === 'pendente') { %>
+                                        <button type="button" class="btn btn-success btn-sm" title="Marcar como concluída" onclick="toggleTaskStatus('<%= tarefa._id %>')">
+                                            ✓ 
+                                        </button>
+                                    <% } else { %>
+                                        <button type="button" class="btn btn-warning btn-sm" title="Reabrir tarefa" onclick="toggleTaskStatus('<%= tarefa._id %>')">
+                                            ↶ Reabrir
+                                        </button>
+                                    <% } %>
+                                    
+                                <button type="button" class="btn btn-warning btn-sm" title="Editar tarefa" 
+                                        onclick="abrirModalEditar('<%= tarefa._id %>', '<%= tarefa.titulo || tarefa.descricao %>', '<%= tarefa.descricao %>', '<%= tarefa.prioridade || 'baixa' %>')">
+                                    ✏️
+                                </button>
+                                    
+                                    <form action="/tarefas/<%= tarefa._id %>/excluir" method="POST" class="action-form" 
+                                          onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?')">
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Excluir tarefa">
+                                            🗑️ 
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </main>
+        
+        <!-- Rodapé -->
+        <div class="footer">
+            <p>Gerenciador de Tarefas - Aula 1 | Desenvolvido para fins educacionais</p>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar tarefa -->
+    <div id="modalTarefa" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Nova Tarefa</h2>
+                <span class="close" onclick="fecharModalTarefa()">&times;</span>
+            </div>
+            
+            <form id="formTarefa" method="POST" class="modal-form">
+                <div class="form-group">
+                    <label for="tituloTarefa">Título da Tarefa:</label>
+                    <input 
+                        type="text" 
+                        id="tituloTarefa" 
+                        name="titulo" 
+                        placeholder="Digite o título da tarefa..." 
+                        required 
+                        class="form-input"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="descricaoTarefa">Descrição:</label>
+                    <textarea 
+                        id="descricaoTarefa" 
+                        name="descricao" 
+                        placeholder="Descreva os detalhes da tarefa..." 
+                        rows="3"
+                        class="form-input"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="prioridadeTarefa">Prioridade:</label>
+                    <select id="prioridadeTarefa" name="prioridade" class="form-input" required>
+                        <option value="">Selecione a prioridade</option>
+                        <option value="baixa">🟢 Baixa</option>
+                        <option value="media">🟡 Média</option>
+                        <option value="urgente">🔴 Urgente</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModalTarefa()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnSalvar">
+                        Adicionar Tarefa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            });
+        }, 5000);
+
+        // Funções do modal
+        function abrirModalTarefa() {
+            document.getElementById('modalTarefa').style.display = 'block';
+            document.getElementById('modalTitulo').textContent = 'Nova Tarefa';
+            document.getElementById('btnSalvar').textContent = 'Adicionar Tarefa';
+            document.getElementById('formTarefa').action = '/tarefas';
+            document.getElementById('formTarefa').method = 'POST';
+            
+            // Limpar formulário
+            document.getElementById('formTarefa').reset();
+        }
+
+        function abrirModalEditar(tarefaId, tituloTarefa, descricaoTarefa, prioridade) {
+            document.getElementById('modalTarefa').style.display = 'block';
+            document.getElementById('modalTitulo').textContent = 'Editar Tarefa';
+            document.getElementById('btnSalvar').textContent = 'Atualizar Tarefa';
+            document.getElementById('formTarefa').action = `/tarefas/${tarefaId}/atualizar`;
+            document.getElementById('formTarefa').method = 'POST';
+            
+            // Preencher formulário
+            document.getElementById('tituloTarefa').value = tituloTarefa || '';
+            document.getElementById('descricaoTarefa').value = descricaoTarefa || '';
+            document.getElementById('prioridadeTarefa').value = prioridade || 'baixa';
+        }
+
+        function toggleTaskStatus(tarefaId) {
+            const checkbox = document.getElementById(`task-${tarefaId}`);
+            const taskItem = document.querySelector(`[data-task-id="${tarefaId}"]`);
+            const isCurrentlyCompleted = taskItem.classList.contains('task-completed');
+            
+            // Determinar a URL e ação baseada no status atual
+            const url = isCurrentlyCompleted ? `/tarefas/${tarefaId}/reabrir` : `/tarefas/${tarefaId}/concluir`;
+            
+            // Atualizar visual imediatamente
+            if (!isCurrentlyCompleted) {
+                taskItem.classList.add('task-completed');
+                taskItem.classList.remove('task-pending');
+                checkbox.checked = true;
+            } else {
+                taskItem.classList.add('task-pending');
+                taskItem.classList.remove('task-completed');
+                checkbox.checked = false;
+            }
+            
+            // Fazer requisição para o servidor
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Atualizar contadores e recarregar página para sincronizar
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                } else {
+                    // Reverter mudanças se houver erro
+                    if (!isCurrentlyCompleted) {
+                        taskItem.classList.add('task-pending');
+                        taskItem.classList.remove('task-completed');
+                        checkbox.checked = false;
+                    } else {
+                        taskItem.classList.add('task-completed');
+                        taskItem.classList.remove('task-pending');
+                        checkbox.checked = true;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                // Reverter mudanças se houver erro
+                if (!isCurrentlyCompleted) {
+                    taskItem.classList.add('task-pending');
+                    taskItem.classList.remove('task-completed');
+                    checkbox.checked = false;
+                } else {
+                    taskItem.classList.add('task-completed');
+                    taskItem.classList.remove('task-pending');
+                    checkbox.checked = true;
+                }
+            });
+        }
+
+        function updateCounters() {
+            // Atualizar contadores baseado no estado atual das tarefas
+            const totalTasks = document.querySelectorAll('.task-item').length;
+            const completedTasks = document.querySelectorAll('.task-item.task-completed').length;
+            const pendingTasks = totalTasks - completedTasks;
+            
+            document.getElementById('totalTarefas').textContent = totalTasks;
+            document.getElementById('tarefasConcluidas').textContent = completedTasks;
+            document.getElementById('tarefasPendentes').textContent = pendingTasks;
+        }
+
+        function fecharModalTarefa() {
+            document.getElementById('modalTarefa').style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalTarefa');
+            if (event.target == modal) {
+                fecharModalTarefa();
+            }
+        }
+    </script>
+</body>
+</html>

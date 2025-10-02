@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1>ℹ️ Sobre o Projeto</h1>
+            <p>Conheça mais sobre o Gerenciador de Tarefas</p>
+        </div>
+        
+        <!-- Menu de Navegação -->
+        <nav class="nav">
+            <ul>
+                <li><a href="/home" class="nav-link">🏠 Início</a></li>
+                <li><a href="/sobre" class="nav-link active">ℹ️ Sobre</a></li>
+                <li><a href="/tarefas" class="nav-link">📋 Tarefas</a></li>
+                <li><a href="/dashboard" class="nav-link">📊 Dashboard</a></li>
+                <li><a href="/contato" class="nav-link">📞 Contato</a></li>
+                <li><a href="/api/status" class="nav-link">🔧 API Status</a></li>
+                <li>
+                    <form action="/logout" method="POST" class="logout-form">
+                        <button type="submit" class="nav-link logout">🚪 Sair</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <div class="about-section">
+                <div class="about-card">
+                    <h2>📋 Sobre o Gerenciador de Tarefas</h2>
+                    <p class="about-text">
+                        O Gerenciador de Tarefas é um aplicativo web híbrido desenvolvido para fins educacionais, 
+                        demonstrando conceitos modernos de desenvolvimento web com Node.js, Express.js e EJS.
+                    </p>
+                    
+                    <div class="tech-stack">
+                        <h3>🛠️ Tecnologias Utilizadas</h3>
+                        <div class="tech-grid">
+                            <div class="tech-item">
+                                <div class="tech-icon">🟢</div>
+                                <h4>Node.js</h4>
+                                <p>Runtime JavaScript para backend</p>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">⚡</div>
+                                <h4>Express.js</h4>
+                                <p>Framework web minimalista</p>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">🎨</div>
+                                <h4>EJS</h4>
+                                <p>Template engine para views</p>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">💎</div>
+                                <h4>CSS3</h4>
+                                <p>Estilização moderna com glassmorphism</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h3>✨ Funcionalidades Principais</h3>
+                        <ul class="features-ul">
+                            <li>✅ Sistema de autenticação de usuários</li>
+                            <li>📝 Criação e edição de tarefas</li>
+                            <li>🎯 Sistema de prioridades (baixa, média, urgente)</li>
+                            <li>📊 Dashboard com estatísticas completas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="project-info">
+                        <h3>📚 Informações do Projeto</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>Versão:</strong> 1.0.0
+                            </div>
+                            <div class="info-item">
+                                <strong>Desenvolvido em:</strong> 2025
+                            </div>
+                            <div class="info-item">
+                                <strong>Propósito:</strong> Ganhar nota
+                            </div>
+                            <div class="info-item">
+                                <strong>Licença:</strong> Permito
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Rodapé -->
+        <div class="footer">
+            <p>Gerenciador de Tarefas - Aula 1 | Desenvolvido para fins educacionais</p>
+        </div>
+    </div>
+</body>
+</html>
