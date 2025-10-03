@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
 
 // Middleware para verificar autenticação nas rotas API
 const requireAuth = (req, res, next) => {
@@ -14,20 +13,9 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-// ===== ROTAS DE AUTENTICAÇÃO =====
-// POST /api/login - Processar login
-router.post('/login', authController.fazerLogin);
-
-// POST /api/registro - Processar registro
-router.post('/registro', authController.registrarUsuario);
-
-// POST /api/logout - Fazer logout
-router.post('/logout', authController.fazerLogout);
-
-// Aplicar middleware de autenticação nas rotas protegidas
+// Aplicar middleware de autenticação em todas as rotas
 router.use(requireAuth);
 
-// ===== ROTAS DE TAREFAS =====
 // GET /api/tarefas - Listar todas as tarefas do usuário
 router.get('/tarefas', (req, res) => {
     try {
@@ -276,7 +264,6 @@ router.delete('/tarefas/:id', (req, res) => {
     }
 });
 
-// ===== ROTAS DE USUÁRIO E ESTATÍSTICAS =====
 // GET /api/usuario - Obter dados do usuário atual
 router.get('/usuario', (req, res) => {
     try {

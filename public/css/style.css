@@ -387,8 +387,8 @@ body::before {
 
 /* Cards */
 .card {
-    background: rgba(102, 126, 234, 0.4);
-    backdrop-filter: blur(-2px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 20px;
     border: 1px solid var(--glass-border);
@@ -476,28 +476,8 @@ body::before {
     background: linear-gradient(180deg, #ffc107, #fd7e14);
 }
 
-/* Cores de prioridade para tarefas pendentes */
-.task-pending.priority-baixa::before {
-    background: linear-gradient(180deg, #28a745, #20c997); /* Verde */
-}
-
-.task-pending.priority-media::before {
-    background: linear-gradient(180deg, #ffc107, #fd7e14); /* Amarelo/Laranja */
-}
-
-.task-pending.priority-urgente::before {
-    background: linear-gradient(180deg, #dc3545, #c82333); /* Vermelho */
-}
-
 .task-completed::before {
-    background: linear-gradient(180deg, #6c757d, #495057); /* Cinza */
-}
-
-/* Tarefas concluídas sempre ficam cinzas, independente da prioridade */
-.task-completed.priority-baixa::before,
-.task-completed.priority-media::before,
-.task-completed.priority-urgente::before {
-    background: linear-gradient(180deg, #6c757d, #495057); /* Cinza */
+    background: linear-gradient(180deg, #28a745, #20c997);
 }
 
 .task-item:hover {
@@ -564,7 +544,7 @@ body::before {
 }
 
 .task-date {
-    color: #3d3a3a;
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
@@ -586,7 +566,7 @@ body::before {
 
 .task-actions {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
     gap: 12px;
     flex-shrink: 0;
 }
@@ -1068,7 +1048,7 @@ body::before {
 }
 
 .stat-card {
-    background: rgba(102, 126, 234, 0.4);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
@@ -1109,13 +1089,13 @@ body::before {
     margin: 0;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: rgb(89 72 20 / 69%);
+    -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .stat-content p {
     margin: 5px 0 0 0;
-    color: #212529;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -1163,7 +1143,7 @@ body::before {
 
 .progress-text {
     text-align: center;
-    color: #453b3b;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     font-weight: 500;
 }
@@ -1190,17 +1170,17 @@ body::before {
 }
 
 .priority-item.priority-baixa {
-    background: rgba(40, 167, 70, 0.555);
-    border: 1px solid rgba(40, 167, 70, 0.582);
+    background: rgba(40, 167, 69, 0.1);
+    border: 1px solid rgba(40, 167, 69, 0.3);
 }
 
 .priority-item.priority-media {
-    background: rgba(255, 193, 7, 0.452);
+    background: rgba(255, 193, 7, 0.1);
     border: 1px solid rgba(255, 193, 7, 0.3);
 }
 
 .priority-item.priority-urgente {
-    background: rgba(220, 53, 70, 0.418);
+    background: rgba(220, 53, 69, 0.1);
     border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
@@ -1222,7 +1202,7 @@ body::before {
 
 .priority-content p {
     margin: 5px 0 0 0;
-    color: #2c3e50;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -1478,13 +1458,13 @@ body::before {
     margin-bottom: 20px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: #3d3636;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .welcome-text {
     font-size: 1.2rem;
-    color: #000;
+    color: var(--text-secondary);
     margin-bottom: 30px;
     line-height: 1.6;
 }
@@ -1571,11 +1551,11 @@ body::before {
 .feature-card h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
-    color: #000;
+    color: var(--text-primary);
 }
 
 .feature-card p {
-    color: #000;
+    color: var(--text-secondary);
     line-height: 1.6;
 }
 
@@ -1607,13 +1587,13 @@ body::before {
     margin-bottom: 20px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: #2c3e50;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .about-text {
     font-size: 1.1rem;
-    color: #000;
+    color: var(--text-secondary);
     line-height: 1.7;
     margin-bottom: 30px;
 }
@@ -1660,7 +1640,7 @@ body::before {
 }
 
 .tech-item p {
-    color: #211818;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
@@ -1672,7 +1652,7 @@ body::before {
 .features-ul li {
     padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: #392c2c;
+    color: var(--text-secondary);
     font-size: 1.1rem;
 }
 
@@ -1724,7 +1704,7 @@ body::before {
     margin-bottom: 25px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: #000000a1;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
@@ -1769,7 +1749,7 @@ body::before {
 
 .contact-details p {
     margin: 0;
-    color: #4d4040;
+    color: var(--text-secondary);
 }
 
 .social-links h3 {
@@ -1831,7 +1811,7 @@ body::before {
     margin-bottom: 25px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: #000000a6;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
@@ -1854,7 +1834,7 @@ body::before {
 }
 
 .faq-item p {
-    color: #2f2929;
+    color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
 }
@@ -1874,14 +1854,14 @@ body::before {
 
 .footer p {
     margin: 0;
-    color: #312828;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 /* Responsive Design for New Pages */
 @media (max-width: 768px) {
     .nav ul {
-        flex-direction: row;
+        flex-direction: column;
         gap: 10px;
     }
     

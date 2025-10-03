@@ -86,7 +86,7 @@
                 <% } else { %>
                     <div class="tasks-list">
                         <% tarefas.forEach(tarefa => { %>
-                            <div class="task-item <%= tarefa.status === 'concluida' ? 'task-completed' : 'task-pending' %> priority-<%= tarefa.prioridade || 'baixa' %>" data-task-id="<%= tarefa._id %>">
+                            <div class="task-item <%= tarefa.status === 'concluida' ? 'task-completed' : 'task-pending' %>" data-task-id="<%= tarefa._id %>">
                                 <div class="task-checkbox">
                                     <input 
                                         type="checkbox" 
@@ -159,7 +159,7 @@
                                 <div class="task-actions">
                                     <% if (tarefa.status === 'pendente') { %>
                                         <button type="button" class="btn btn-success btn-sm" title="Marcar como concluída" onclick="toggleTaskStatus('<%= tarefa._id %>')">
-                                            ✓ 
+                                            ✓ Concluir
                                         </button>
                                     <% } else { %>
                                         <button type="button" class="btn btn-warning btn-sm" title="Reabrir tarefa" onclick="toggleTaskStatus('<%= tarefa._id %>')">
@@ -169,13 +169,13 @@
                                     
                                 <button type="button" class="btn btn-warning btn-sm" title="Editar tarefa" 
                                         onclick="abrirModalEditar('<%= tarefa._id %>', '<%= tarefa.titulo || tarefa.descricao %>', '<%= tarefa.descricao %>', '<%= tarefa.prioridade || 'baixa' %>')">
-                                    ✏️
+                                    ✏️ Editar
                                 </button>
                                     
                                     <form action="/tarefas/<%= tarefa._id %>/excluir" method="POST" class="action-form" 
                                           onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?')">
                                         <button type="submit" class="btn btn-danger btn-sm" title="Excluir tarefa">
-                                            🗑️ 
+                                            🗑️ Excluir
                                         </button>
                                     </form>
                                 </div>

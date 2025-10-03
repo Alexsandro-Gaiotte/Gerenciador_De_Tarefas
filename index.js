@@ -63,12 +63,18 @@ app.locals.usuarios = usuarios;
 app.locals.tarefas = tarefas;
 
 // Importar rotas
+const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/tasks');
 const apiRoutes = require('./routes/api');
+const dashboardRoutes = require('./routes/dashboard');
 const pagesRoutes = require('./routes/pages');
 
 // Usar rotas
+app.use('/', authRoutes);
+app.use('/', requireAuth, pagesRoutes);
+app.use('/tarefas', requireAuth, taskRoutes);
+app.use('/dashboard', requireAuth, dashboardRoutes);
 app.use('/api', apiRoutes);
-app.use('/', pagesRoutes);
 
 // Rota raiz - redireciona para login
 app.get('/', (req, res) => {

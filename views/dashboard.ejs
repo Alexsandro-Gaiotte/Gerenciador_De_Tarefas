@@ -11,7 +11,7 @@
         <!-- Cabeçalho -->
         <div class="header">
             <h1>📊 Dashboard</h1>
-            <p>Acompanhe seu progresso</p>
+            <p>Acompanhe seu progresso e estatísticas</p>
         </div>
         
         <!-- Menu de Navegação -->
@@ -127,7 +127,7 @@
                 <% } else { %>
                     <div class="tasks-list">
                         <% ultimasTarefas.forEach(tarefa => { %>
-                            <div class="task-item dashboard-task <%= tarefa.status === 'concluida' ? 'task-completed' : 'task-pending' %> priority-<%= tarefa.prioridade || 'baixa' %>">
+                            <div class="task-item dashboard-task <%= tarefa.status === 'concluida' ? 'task-completed' : 'task-pending' %>">
                                 <div class="task-checkbox">
                                     <input 
                                         type="checkbox" 
